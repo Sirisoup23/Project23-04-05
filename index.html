@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Slot Machine</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .reel {
+            display: inline-block;
+            font-size: 50px;
+            padding: 10px 20px;
+            border: 2px solid gold;
+            margin: 5px;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Test your luck</h1>
+    <h3>Click the button to play</h3>
+
+    <!-- Slot Machine Display -->
+    <div class="reel" id="reel1">7️⃣</div>
+    <div class="reel" id="reel2">🎰</div>
+    <div class="reel" id="reel3">💲</div>
+    <div class="reel" id="reel4">💰</div>
+
+
+    <br>
+    <button onclick="spin()">Spin</button>
+
+    <h2 id="result"></h2>
+
+    <script>
+        const symbols = ['7️⃣', '🎰', '💲','💰']
+
+        function spin() {
+            // Pick 3 random symbols
+            const slot1 = symbols[Math.floor(Math.random() * symbols.length)];
+            const slot2 = symbols[Math.floor(Math.random() * symbols.length)];
+            const slot3 = symbols[Math.floor(Math.random() * symbols.length)];
+            const slot4 = symbols[Math.floor(Math.random() * symbols.length)];
+            // Show symbols on the screen
+            document.getElementById('reel1').textContent = slot1;
+            document.getElementById('reel2').textContent = slot2;
+            document.getElementById('reel3').textContent = slot3;
+            document.getElementById('reel4').textContent = slot4;
+
+
+            // Check if player won
+            if (slot1 === slot2 && slot2 === slot3 && slot3 == slot4) {
+                document.getElementById('result').textContent = "🎉 You Win!";
+            } else {
+                document.getElementById('result').textContent = "Try Again!";
+            }
+        }
+    </script>
+
+</body>
+</html>
