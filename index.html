@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,7 @@
             color: #f1c40f;
         }
 
-        /* ส่วนจัดวาง 3 ช่องของ Slot */
+        /* 3-slot layout container */
         .slot-machine {
             display: flex;
             justify-content: center;
@@ -48,18 +48,6 @@
             justify-content: center;
             align-items: center;
             user-select: none;
-            transition: transform 0.1s ease;
-        }
-
-        /* เอฟเฟกต์สั่นตอนหมุน */
-        .spinning {
-            animation: shake 0.1s infinite;
-        }
-
-        @keyframes shake {
-            0% { transform: translateY(-5px); }
-            50% { transform: translateY(5px); }
-            100% { transform: translateY(-5px); }
         }
 
         button {
@@ -95,17 +83,10 @@
 
         .win {
             color: #2ecc71;
-            animation: blink 0.5s infinite;
         }
 
         .lose {
             color: #e74c3c;
-        }
-
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
         }
     </style>
 </head>
@@ -114,73 +95,58 @@
 <div class="container">
     <h1>🎰 LUCKY SLOT 🎰</h1>
     
-    <!-- ช่องเสี่ยงโชค 3 ส่วน -->
+    <!-- Slot machine display reels -->
     <div class="slot-machine">
         <div id="slot1" class="slot">🍒</div>
         <div id="slot2" class="slot">🍋</div>
         <div id="slot3" class="slot">🍇</div>
     </div>
 
-    <!-- ปุ่มกดสำหรับสปิน -->
-    <button id="spinBtn" onclick="spin()">SPIN!</button>
+    <!-- Spin button -->
+    <button id="spinBtn">SPIN!</button>
 
-    <!-- พื้นที่แสดงข้อความรางวัล -->
+    <!-- Win/Loss result message display area -->
     <div id="resultMessage" class="result"></div>
 </div>
 
 <script>
-    // อาร์เรย์เก็บรายการสัญลักษณ์ที่ใช้ใน Slot Machine
+    // Array of symbols used in the Slot Machine
     const symbols = ['🍒', '🍋', '🍇', '🍉', '🔔', '💎', '7️⃣'];
+
+    // Attach event listener to the spin button
+    document.getElementById('spinBtn').addEventListener('click', spin);
 
     function spin() {
         const slot1 = document.getElementById('slot1');
         const slot2 = document.getElementById('slot2');
         const slot3 = document.getElementById('slot3');
-        const spinBtn = document.getElementById('spinBtn');
         const resultMessage = document.getElementById('resultMessage');
 
-        // ปิดการใช้งานปุ่มชั่วคราว และล้างข้อความผลลัพธ์เดิม
-        spinBtn.disabled = true;
+        // Reset previous result state
         resultMessage.innerText = "";
         resultMessage.className = "result";
 
-        // ใส่แอนิเมชันเคลื่อนไหวเพิ่มความสมจริง
-        slot1.classList.add('spinning');
-        slot2.classList.add('spinning');
-        slot3.classList.add('spinning');
+        // Generate instant random symbols for all 3 slots (no delay or animation)
+        const res1 = getRandomSymbol();
+        const res2 = getRandomSymbol();
+        const res3 = getRandomSymbol();
 
-        // จำลองเวลาในการหมุน (1 วินาที) ก่อนจะหยุดและสุ่มผลลัพธ์
-        setTimeout(() => {
-            // ถอดแอนิเมชันออกเมื่อหยุดหมุน
-            slot1.classList.remove('spinning');
-            slot2.classList.remove('spinning');
-            slot3.classList.remove('spinning');
+        // Immediately update display
+        slot1.innerText = res1;
+        slot2.innerText = res2;
+        slot3.innerText = res3;
 
-            // สุ่มสัญลักษณ์ให้ทั้ง 3 ช่อง
-            const res1 = getRandomSymbol();
-            const res2 = getRandomSymbol();
-            const res3 = getRandomSymbol();
-
-            // แสดงผลลัพธ์บนหน้าจอ
-            slot1.innerText = res1;
-            slot2.innerText = res2;
-            slot3.innerText = res3;
-
-            // ตรวจสอบเงื่อนไขการชนะรางวัล: ถ้าทั้ง 3 ช่องซ้ำกันทั้งหมด
-            if (res1 === res2 && res2 === res3) {
-                resultMessage.innerText = `🎉 คุณชนะรางวัลแจ็กพอต! (${res1}${res2}${res3}) 🎉`;
-                resultMessage.classList.add('win');
-            } else {
-                resultMessage.innerText = "❌ เสียใจด้วยนะ! ลองใหม่อีกครั้ง ❌";
-                resultMessage.classList.add('lose');
-            }
-
-            // เปิดใช้งานปุ่มกดอีกครั้ง
-            spinBtn.disabled = false;
-        }, 1000); 
+        // Check winning condition: match all 3 slots
+        if (res1 === res2 && res2 === res3) {
+            resultMessage.innerText = `🎉 Jackpot! You Won! (${res1}${res2}${res3}) 🎉`;
+            resultMessage.classList.add('win');
+        } else {
+            resultMessage.innerText = "❌ Bad luck! Try again! ❌";
+            resultMessage.classList.add('lose');
+        }
     }
 
-    // ฟังก์ชันช่วยสุ่มดึงสัญลักษณ์จากอาร์เรย์อย่างยุติธรรม
+    // Utility function to get a random symbol from the array
     function getRandomSymbol() {
         const randomIndex = Math.floor(Math.random() * symbols.length);
         return symbols[randomIndex];
@@ -189,3 +155,4 @@
 
 </body>
 </html>
+
