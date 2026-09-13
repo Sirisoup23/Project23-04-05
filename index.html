@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -42,7 +43,9 @@
             user-select: none;
         }
 
+        /* Restored button background and state selectors */
         button {
+            background-color: #e74c3c;
             color: #ffffff;
             border: none;
             padding: 15px 40px;
@@ -53,11 +56,12 @@
             transition: all 0.1s ease;
         }
 
-        button {
-            transform: translateY(5px);
+        button:active {
+            transform: translateY(2px);
         }
 
-        button {
+        button:disabled {
+            background-color: #7f8c8d;
             cursor: not-allowed;
         }
 
@@ -130,4 +134,5 @@
 
 </body>
 </html>
+
 
