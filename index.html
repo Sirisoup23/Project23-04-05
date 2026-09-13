@@ -7,26 +7,22 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #ffffff; /* Pure white background */
+            background: #ffffff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            color: #000000; /* All text default set to black */
-        }
-
-        .container {
-            text-align: center;
-            padding: 30px;
+            color: #000000;
         }
 
         h1 {
             margin-bottom: 20px;
-            color: #000000; /* Black heading text */
+            color: #000000;
         }
 
-        /* 3-slot layout container */
+        /* 3-slot layout */
         .slot-machine {
             display: flex;
             justify-content: center;
@@ -37,8 +33,8 @@
         .slot {
             width: 100px;
             height: 100px;
-            background-color: #ffffff;
-            border: 4px solid #f1c40f; /* Border remains on slot boxes */
+            background: transparent;
+            border: 4px solid #f1c40f;
             border-radius: 10px;
             font-size: 50px;
             display: flex;
@@ -76,13 +72,12 @@
             font-size: 24px;
             font-weight: bold;
             min-height: 35px;
-            color: #000000; /* Black result text */
+            color: #000000;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
     <h1>🎰 LUCKY SLOT 🎰</h1>
     
     <!-- Slot machine display reels -->
@@ -97,7 +92,6 @@
 
     <!-- Win/Loss result message display area -->
     <div id="resultMessage" class="result"></div>
-</div>
 
 <script>
     // Array of symbols used in the Slot Machine
