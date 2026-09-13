@@ -22,7 +22,7 @@
             color: #000000;
         }
 
-        /* 3-slot layout */
+        /* slot layout */
         .slot-machine {
             display: flex;
             justify-content: center;
@@ -78,7 +78,7 @@
 
     <h1>🎰 LUCKY SLOT 🎰</h1>
     
-    <!-- Slot machine display reels -->
+    <!-- Slot machine display -->
     <div class="slot-machine">
         <div id="slot1" class="slot">🍒</div>
         <div id="slot2" class="slot">🍋</div>
@@ -89,7 +89,7 @@
     <button id="spinBtn">SPIN!</button>
 
     <!-- Win/Loss result message display area -->
-    <div id="resultMessage" class="result"></div>
+    <div id="resultMessage"></div>
 
 <script>
     // Array of symbols used in the Slot Machine
@@ -107,17 +107,17 @@
         // Reset previous result state
         resultMessage.innerText = "";
 
-        // Generate instant random symbols for all 3 slots
+        // Generate random symbols for all 3 slots
         const res1 = getRandomSymbol();
         const res2 = getRandomSymbol();
         const res3 = getRandomSymbol();
 
-        // Immediately update display
+        // update display
         slot1.innerText = res1;
         slot2.innerText = res2;
         slot3.innerText = res3;
 
-        // Check winning condition: match all 3 slots
+        // Check winning condition
         if (res1 === res2 && res2 === res3) {
             resultMessage.innerText = `🎉 You just hit the jackpot ! (${res1}${res2}${res3}) 🎉`;
         } else {
@@ -125,7 +125,7 @@
         }
     }
 
-    // Utility function to get a random symbol from the array
+    // get a random symbol from the array
     function getRandomSymbol() {
         const randomIndex = Math.floor(Math.random() * symbols.length);
         return symbols[randomIndex];
