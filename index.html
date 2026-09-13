@@ -1,70 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>JavaScript Slot Machine</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        .reel {
-            display: inline-block;
-            font-size: 50px;
-            padding: 10px 20px;
-            border: 2px solid gold;
-            margin: 5px;
-        }
-        button {
-            font-size: 18px;
-            padding: 10px 20px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
+<script>
+    // อาร์เรย์เก็บรายการสัญลักษณ์ที่ใช้ใน Slot Machine
+    const symbols = ['🍒', '🍋', '🍇', '🍉', '🔔', '💎', '7️⃣'];
 
-    <h1>Test your luck</h1>
-    <h3>Click the button to play</h3>
+    function spin() {
+        const slot1 = document.getElementById('slot1');
+        const slot2 = document.getElementById('slot2');
+        const slot3 = document.getElementById('slot3');
+        const spinBtn = document.getElementById('spinBtn');
+        const resultMessage = document.getElementById('resultMessage');
 
-    <!-- Slot Machine Display -->
-    <div class="reel" id="reel1">7️⃣</div>
-    <div class="reel" id="reel2">🎰</div>
-    <div class="reel" id="reel3">💲</div>
-    <div class="reel" id="reel4">💰</div>
+        // ปิดการใช้งานปุ่มชั่วคราว และล้างข้อความผลลัพธ์เดิม
+        spinBtn.disabled = true;
+        resultMessage.innerText = "";
+        resultMessage.className = "result";
 
+        // ใส่แอนิเมชันเคลื่อนไหวเพิ่มความสมจริง
+        slot1.classList.add('spinning');
+        slot2.classList.add('spinning');
+        slot3.classList.add('spinning');
 
-    <br>
-    <button onclick="spin()">Spin</button>
+        // จำลองเวลาในการหมุน (1 วินาที) ก่อนจะหยุดและสุ่มผลลัพธ์
+        setTimeout(() => {
+            // ถอดแอนิเมชันออกเมื่อหยุดหมุน
+            slot1.classList.remove('spinning');
+            slot2.classList.remove('spinning');
+            slot3.classList.remove('spinning');
 
-    <h2 id="result"></h2>
+            // สุ่มสัญลักษณ์ให้ทั้ง 3 ช่อง
+            const res1 = getRandomSymbol();
+            const res2 = getRandomSymbol();
+            const res3 = getRandomSymbol();
 
-    <script>
-        const symbols = ['7️⃣', '🎰', '💲','💰']
+            // แสดงผลลัพธ์บนหน้าจอ
+            slot1.innerText = res1;
+            slot2.innerText = res2;
+            slot3.innerText = res3;
 
-        function spin() {
-            // Pick 3 random symbols
-            const slot1 = symbols[Math.floor(Math.random() * symbols.length)];
-            const slot2 = symbols[Math.floor(Math.random() * symbols.length)];
-            const slot3 = symbols[Math.floor(Math.random() * symbols.length)];
-            const slot4 = symbols[Math.floor(Math.random() * symbols.length)];
-            // Show symbols on the screen
-            document.getElementById('reel1').textContent = slot1;
-            document.getElementById('reel2').textContent = slot2;
-            document.getElementById('reel3').textContent = slot3;
-            document.getElementById('reel4').textContent = slot4;
-
-
-            // Check if player won
-            if (slot1 === slot2 && slot2 === slot3 && slot3 == slot4) {
-                document.getElementById('result').textContent = "🎉 You Win!";
+            // ตรวจสอบเงื่อนไขการชนะรางวัล: ถ้าทั้ง 3 ช่องซ้ำกันทั้งหมด
+            if (res1 === res2 && res2 === res3) {
+                resultMessage.innerText = `🎉 คุณชนะรางวัลแจ็กพอต! (${res1}${res2}${res3}) 🎉`;
+                resultMessage.classList.add('win');
             } else {
-                document.getElementById('result').textContent = "Try Again!";
+                resultMessage.innerText = "❌ เสียใจด้วยนะ! ลองใหม่อีกครั้ง ❌";
+                resultMessage.classList.add('lose');
             }
-        }
-    </script>
+
+            // เปิดใช้งานปุ่มกดอีกครั้ง
+            spinBtn.disabled = false;
+        }, 1000); 
+    }
+
+    // ฟังก์ชันช่วยสุ่มดึงสัญลักษณ์จากอาร์เรย์อย่างยุติธรรม
+    function getRandomSymbol() {
+        const randomIndex = Math.floor(Math.random() * symbols.length);
+        return symbols[randomIndex];
+    }
+</script>
 
 </body>
 </html>
