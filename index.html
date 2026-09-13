@@ -58,7 +58,6 @@
         }
 
         button {
-            box-shadow: 0 5px #95a5a6;
             cursor: not-allowed;
         }
 
@@ -116,9 +115,9 @@
 
         // Check winning condition: match all 3 slots
         if (res1 === res2 && res2 === res3) {
-            resultMessage.innerText = `🎉 Jackpot! You Won! (${res1}${res2}${res3}) 🎉`;
+            resultMessage.innerText = `🎉 You just hit the jackpot ! (${res1}${res2}${res3}) 🎉`;
         } else {
-            resultMessage.innerText = "❌ Bad luck! Try again! ❌";
+            resultMessage.innerText = "❌ glambers stop when they about to hit the prize ❌";
         }
     }
 
