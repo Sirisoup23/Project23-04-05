@@ -1,190 +1,135 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Slot Machine</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #2c3e50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #fff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Slot Machine</title>
+<style>
+body {
+font-family: 'Arial', sans-serif;
+background-color: #ffffff;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+color: #000000;
+}
 
-        .container {
-            text-align: center;
-            background-color: #34495e;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
+h1 {
+margin-bottom: 20px;
+color: #000000;
+}
 
-        h1 {
-            margin-bottom: 20px;
-            color: #f1c40f;
-        }
+/* slot layout */
+.slot-machine {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin-bottom: 30px;
+}
 
-        /* ส่วนจัดวาง 3 ช่องของ Slot */
-        .slot-machine {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+.slot {
+width: 100px;
+height: 100px;
+background: transparent;
+border: 4px solid #f1c40f;
+border-radius: 10px;
+font-size: 50px;
+display: flex;
+justify-content: center;
+align-items: center;
+user-select: none;
+}
 
-        .slot {
-            width: 100px;
-            height: 100px;
-            background-color: #fff;
-            border: 4px solid #f1c40f;
-            border-radius: 10px;
-            font-size: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            user-select: none;
-            transition: transform 0.1s ease;
-        }
+/* Restored button background and state selectors */
+button {
+background-color: #e74c3c;
+color: #ffffff;
+border: none;
+padding: 15px 40px;
+font-size: 20px;
+font-weight: bold;
+border-radius: 25px;
+cursor: pointer;
+transition: all 0.1s ease;
+}
 
-        /* เอฟเฟกต์สั่นตอนหมุน */
-        .spinning {
-            animation: shake 0.1s infinite;
-        }
+button:active {
+transform: translateY(2px);
+}
 
-        @keyframes shake {
-            0% { transform: translateY(-5px); }
-            50% { transform: translateY(5px); }
-            100% { transform: translateY(-5px); }
-        }
+button:disabled {
+background-color: #7f8c8d;
+cursor: not-allowed;
+}
 
-        button {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px #c0392b;
-            transition: all 0.1s ease;
-        }
-
-        button:active {
-            box-shadow: 0 0px #c0392b;
-            transform: translateY(5px);
-        }
-
-        button:disabled {
-            background-color: #7f8c8d;
-            box-shadow: 0 5px #95a5a6;
-            cursor: not-allowed;
-        }
-
-        .result {
-            margin-top: 25px;
-            font-size: 24px;
-            font-weight: bold;
-            min-height: 35px;
-        }
-
-        .win {
-            color: #2ecc71;
-            animation: blink 0.5s infinite;
-        }
-
-        .lose {
-            color: #e74c3c;
-        }
-
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-    </style>
+.result {
+margin-top: 25px;
+font-size: 24px;
+font-weight: bold;
+min-height: 35px;
+color: #000000;
+}
+</style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🎰 LUCKY SLOT 🎰</h1>
-    
-    <!-- ช่องเสี่ยงโชค 3 ส่วน -->
-    <div class="slot-machine">
-        <div id="slot1" class="slot">🍒</div>
-        <div id="slot2" class="slot">🍋</div>
-        <div id="slot3" class="slot">🍇</div>
-    </div>
+<h1>🎰 LUCKY SLOT 🎰</h1>
 
-    <!-- ปุ่มกดสำหรับสปิน -->
-    <button id="spinBtn" onclick="spin()">SPIN!</button>
-
-    <!-- พื้นที่แสดงข้อความรางวัล -->
-    <div id="resultMessage" class="result"></div>
+<!-- Slot machine display -->
+<div class="slot-machine">
+<div id="slot1" class="slot">🍒</div>
+<div id="slot2" class="slot">🍋</div>
+<div id="slot3" class="slot">🍇</div>
 </div>
 
+<!-- Spin button -->
+<button id="spinBtn">SPIN!</button>
+
+<!-- Win/Loss result message display area -->
+<div id="resultMessage"></div>
+
 <script>
-    // อาร์เรย์เก็บรายการสัญลักษณ์ที่ใช้ใน Slot Machine
-    const symbols = ['🍒', '🍋', '🍇', '🍉', '🔔', '💎', '7️⃣'];
+// Array of symbols used in the Slot Machine
+const symbols = ['🍒', '🍋', '🍇', '🍉', '🔔', '💎', '7️⃣'];
 
-    function spin() {
-        const slot1 = document.getElementById('slot1');
-        const slot2 = document.getElementById('slot2');
-        const slot3 = document.getElementById('slot3');
-        const spinBtn = document.getElementById('spinBtn');
-        const resultMessage = document.getElementById('resultMessage');
+// Attach event listener to the spin button
+document.getElementById('spinBtn').addEventListener('click', spin);
 
-        // ปิดการใช้งานปุ่มชั่วคราว และล้างข้อความผลลัพธ์เดิม
-        spinBtn.disabled = true;
-        resultMessage.innerText = "";
-        resultMessage.className = "result";
+function spin() {
+const slot1 = document.getElementById('slot1');
+const slot2 = document.getElementById('slot2');
+const slot3 = document.getElementById('slot3');
+const resultMessage = document.getElementById('resultMessage');
 
-        // ใส่แอนิเมชันเคลื่อนไหวเพิ่มความสมจริง
-        slot1.classList.add('spinning');
-        slot2.classList.add('spinning');
-        slot3.classList.add('spinning');
+// Reset previous result state
+resultMessage.innerText = "";
 
-        // จำลองเวลาในการหมุน (1 วินาที) ก่อนจะหยุดและสุ่มผลลัพธ์
-        setTimeout(() => {
-            // ถอดแอนิเมชันออกเมื่อหยุดหมุน
-            slot1.classList.remove('spinning');
-            slot2.classList.remove('spinning');
-            slot3.classList.remove('spinning');
+// Generate random symbols for all 3 slots
+const res1 = getRandomSymbol();
+const res2 = getRandomSymbol();
+const res3 = getRandomSymbol();
 
-            // สุ่มสัญลักษณ์ให้ทั้ง 3 ช่อง
-            const res1 = getRandomSymbol();
-            const res2 = getRandomSymbol();
-            const res3 = getRandomSymbol();
+// update display
+slot1.innerText = res1;
+slot2.innerText = res2;
+slot3.innerText = res3;
 
-            // แสดงผลลัพธ์บนหน้าจอ
-            slot1.innerText = res1;
-            slot2.innerText = res2;
-            slot3.innerText = res3;
+// Check winning condition
+if (res1 === res2 && res2 === res3) {
+resultMessage.innerText = `🎉 You just hit the jackpot ! (${res1}${res2}${res3}) 🎉`;
+} else {
+resultMessage.innerText = "❌ glambers stop when they about to hit the prize ❌";
+}
+}
 
-            // ตรวจสอบเงื่อนไขการชนะรางวัล: ถ้าทั้ง 3 ช่องซ้ำกันทั้งหมด
-            if (res1 === res2 && res2 === res3) {
-                resultMessage.innerText = `🎉 คุณชนะรางวัลแจ็กพอต! (${res1}${res2}${res3}) 🎉`;
-                resultMessage.classList.add('win');
-            } else {
-                resultMessage.innerText = "❌ เสียใจด้วยนะ! ลองใหม่อีกครั้ง ❌";
-                resultMessage.classList.add('lose');
-            }
-
-            // เปิดใช้งานปุ่มกดอีกครั้ง
-            spinBtn.disabled = false;
-        }, 1000); 
-    }
-
-    // ฟังก์ชันช่วยสุ่มดึงสัญลักษณ์จากอาร์เรย์อย่างยุติธรรม
-    function getRandomSymbol() {
-        const randomIndex = Math.floor(Math.random() * symbols.length);
-        return symbols[randomIndex];
-    }
+// get a random symbol from the array
+function getRandomSymbol() {
+const randomIndex = Math.floor(Math.random() * symbols.length);
+return symbols[randomIndex];
+}
 </script>
 
 </body>
